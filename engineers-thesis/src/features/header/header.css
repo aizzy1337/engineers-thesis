@@ -1,0 +1,48 @@
+.header-grid {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .header-card {
+    border-radius: 8px;
+    align-content: center;
+  }
+
+.title {
+    text-align: left;
+    font-size: 5vw;
+    font-weight: 900;
+    background: linear-gradient(
+      to right,
+      #49BFBF 20%,
+      #63BFAE 50%,
+      #96D9B3 80%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 500% auto;
+    animation: textShine 3s ease-in-out infinite alternate;
+  }
+  
+  @keyframes textShine {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+  }
+
+.subtitle {
+    font-weight: 100;
+    margin-top: -1vw;
+    margin-bottom: 30px;
+  }
+
+  img {
+    height: auto;
+    width: 8vw;
+  }

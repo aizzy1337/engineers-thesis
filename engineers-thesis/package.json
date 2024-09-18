@@ -11,8 +11,13 @@
     "deploy": "npm run build && wrangler pages deploy ./dist"
   },
   "dependencies": {
+    "@fontsource/roboto": "^5.1.0",
+    "@react-google-maps/api": "^2.19.3",
+    "engineers-thesis": "file:",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-tsparticles": "^2.9.3",
+    "tsparticles": "^2.9.3"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240909.0",
@@ -21,11 +26,18 @@
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "postcss": "^8.4.47",
+    "tailwind": "^4.0.0",
+    "tailwindcss": "^3.4.12",
     "typescript": "^5.2.2",
-    "vite": "^5.2.0",
+    "vite": "^5.4.6",
     "wrangler": "^3.78.2"
+  },
+  "overrides": {
+    "react-error-overlay": "6.0.9"
   }
 }

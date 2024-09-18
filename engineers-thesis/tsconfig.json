@@ -5,6 +5,7 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "allowJs": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -12,7 +13,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
 
     /* Linting */
     "strict": true,
@@ -23,6 +24,6 @@
         "@cloudflare/workers-types/2023-07-01"
     ]
   },
-  "include": ["src"],
+  "include": ["src", "src/features/map/map.jsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
