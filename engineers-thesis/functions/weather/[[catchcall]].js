@@ -1,3 +1,4 @@
 export function onRequest(context) {
-    return new Response(JSON.stringify(context.params.catchall))
-}
+    console.log(JSON.stringify(context.params.catchall));
+    return new Response(JSON.stringify(context.params.catchall));
+  }
