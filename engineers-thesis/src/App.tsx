@@ -1,31 +1,25 @@
-import { useEffect } from 'react'
+import { Routes, Route } from 'react-router-dom';
+import { Suspense } from 'react';
+import FrontPage from './pages/front-page/front-page';
 import './App.css'
-import Header from './features/header/header'
-import Map from './features/map/map'
-import { jsonResponseConverter } from './utils/jsonResponseConverter'
+import NotFound from './pages/not-found/not-found';
+import Error from './pages/error/error';
+import Loading from './pages/loading/loading';
+import RaportByCode from './features/raport-by-code/raport-by-code';
+import RaportByLocation from './features/raport-by-location/raport-by-location';
 
 function App() {
-
-  useEffect(() => {
-    const getWeatherConditions = async () => {
-      const response = await fetch("/weather/50/20/2024-09-16/2024-09-17");
-      console.log(jsonResponseConverter(response));
-    }
-
-    getWeatherConditions();
-  }, []);
-
   return (
     <div className="container">
-      <Header />
-      
-      <main>
-        <Map />
-      </main>
-
-      <footer>
-        <p>@ Arkadiusz Zając</p>
-      </footer>
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path="/" element={<FrontPage />} />
+          <Route path="/raport/:code" element={<RaportByCode />} />
+          <Route path="/raport/:lat/:lng" element={<RaportByLocation />} />
+          <Route path="/error" element={<Error />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
     </div>
   )
 }

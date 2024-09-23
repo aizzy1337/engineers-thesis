@@ -42,7 +42,17 @@
         gap: 20px;
     }
 
-    #autocomplete {
+    #autocomplete{
+        height: 5vh;
+        margin-bottom: 20px;
+    }
+
+    #code {
+        height: 5vh;
+        margin-bottom: 20px;
+    }
+
+    .button {
         height: 5vh;
         margin-bottom: 20px;
     }
@@ -61,17 +71,23 @@
     #autocomplete {
         height: 5vh;
     }
+
+    #code {
+        height: 5vh;
+        margin-bottom: 20px;
+    }
+
+    .button {
+        height: 5vh;
+        margin-bottom: 10px;
+    }
 }
 
 .location {
     font-weight: 200;
     justify-content: center;
     align-content: center;
-}
-
-.button {
-    height: 5vh;
-    margin-bottom: 20px;
+    padding: 10px;
 }
 
 p {

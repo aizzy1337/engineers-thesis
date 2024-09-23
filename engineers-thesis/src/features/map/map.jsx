@@ -2,10 +2,11 @@ import { useState, useRef } from "react";
 import {
   GoogleMap,
   useLoadScript,
-  Marker,
   Autocomplete,
+  MarkerF
 } from "@react-google-maps/api";
 import "./map.css"
+import Loading from "../../pages/loading/loading";
 
 export default function Map() {
 
@@ -18,7 +19,7 @@ export default function Map() {
     libraries: ["places"],
   });
 
-  if (!isLoaded) return <div>Loading....</div>;
+  if (!isLoaded) return <Loading />;
 
   function changeLocation(e) {
     setLocation({ lat: e.latLng.lat(), lng: e.latLng.lng() })
@@ -34,13 +35,13 @@ export default function Map() {
     setCenter(latlng);
   }
 
+  function raportCodeSubmit() {
+
+  }
+
   return (
     <div className="map-div">
       <div className="navigation">
-        <div className="location">
-          <p><b>Latitude:</b> {location.lat}°</p>
-          <p><b>Longitude:</b> {location.lng}°</p>
-        </div>
         <Autocomplete
           onLoad={(autocomplete) => {
             autocompleteRef.current = autocomplete;
@@ -54,6 +55,7 @@ export default function Map() {
         <div className="button">
             <button type="button" className="bg-black-50 border border-white-300 text-white-900 text-lg text-center rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow shadow-blue-500/50 focus:shadow-md focus:shadow-white hover:shadow-md hover:shadow-white">Generate raport</button>
         </div>
+        <input type="text" placeholder="Type raport code..." className="bg-black-50 border border-white-300 text-white-900 text-lg text-center rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow shadow-blue-500/50 focus:shadow-md focus:shadow-white" id="code" onSubmit={raportCodeSubmit}/>
       </div>
       
       <GoogleMap
@@ -64,8 +66,12 @@ export default function Map() {
         mapTypeId="roadmap"
         onClick={changeLocation}
       >
-        <Marker position={location} />
+        <MarkerF position={location} />
       </GoogleMap>
+
+      <div className="location">
+        <p><b>Latitude:</b> {location.lat}° | <b>Longitude:</b> {location.lng}°</p>
+      </div>
     </div>
   );
 }
