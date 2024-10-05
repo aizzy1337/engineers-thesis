@@ -1,0 +1,13 @@
+#properties-box {
+    background: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#text-field {
+    border-radius: 10px;
+}
+
+#button {
+    background: #030303;
+}

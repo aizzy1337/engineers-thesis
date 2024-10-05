@@ -11,6 +11,7 @@ function createPagination(): Array<{ start: string, end: string }> {
 
     if (current.getMonth() === now.getMonth() && current.getFullYear() === now.getFullYear()) {
       end = now;
+      end.setDate(now.getDate() + 7);
     }
     else {
       end = new Date(current.getFullYear(), current.getMonth() + 1, 0);

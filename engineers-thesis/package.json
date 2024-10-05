@@ -11,7 +11,12 @@
     "deploy": "npm run build && wrangler pages deploy ./dist"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@fontsource/roboto": "^5.1.0",
+    "@mui/icons-material": "^6.1.1",
+    "@mui/material": "^6.1.2",
+    "@mui/x-charts": "^7.19.0",
     "@react-google-maps/api": "^2.19.3",
     "engineers-thesis": "file:",
     "react": "^18.2.0",

@@ -1,20 +1,56 @@
+import { useState } from 'react';
 import './raport.css'
-import { jsonResponseConverter } from '../../utils/jsonResponseConverter';
-import { useEffect } from 'react';
+import { energyRaport } from '../../types/energy-raport';
+import { solarPanelProperties } from '../../types/solar-panel-properties';
+import { windTurbineProperties } from '../../types/wind-turbine-properties';
+import generateSolarEnergyRaport from '../../utils/generateSolarEnergyRaport';
+import generateWindEnergyRaport from '../../utils/generateWindEnergyRaport';
+import { defaultSolarPanelProperties } from '../../types/default-solar-panel-properties';
+import { defaultWindTurbineProperties } from '../../types/default-wind-turbine-properties';
+import { weatherDataProps } from '../../types/weather-data-props';
+import RaportHeader from '../../features/raport/raport-header/raport-header';
+import { Grid2} from '@mui/material';
+import { raportProperties } from '../../types/raport-properties-props';
+import RaportProperties from '../../features/raport/raport-properties/raport-properties';
+import RaportCharts from '../../features/raport/raport-charts/raport-charts';
 
-function Raport() {
-    useEffect(() => {
-        const getWeatherConditions = async () => {
-          const response = await fetch("/weather/50/20/2024-09-16/2024-09-17");
-          console.log(await jsonResponseConverter(response));
-        }
-    
-        getWeatherConditions();
-    }, []);
+const Raport: React.FC<weatherDataProps> = ({data}) => {
+    const [solarPanelProperties, setSolarPanelProperties] = useState<solarPanelProperties>(defaultSolarPanelProperties);
+    const [windTurbineProperties, setWindTurbineProperties] = useState<windTurbineProperties>(defaultWindTurbineProperties);
+    const [solarEnergyRaport, setSolarEnergyRaport] = useState<energyRaport[]>(generateSolarEnergyRaport(data.weatherConditions, solarPanelProperties as solarPanelProperties));
+    const [windEnergyRaport, setWindEnergyRaport] = useState<energyRaport[]>(generateWindEnergyRaport(data.weatherConditions, windTurbineProperties as windTurbineProperties));
+
+    const handlePropertiesCallback = (properties: raportProperties): void => {
+        setSolarPanelProperties(properties.solarPanel);
+        setWindTurbineProperties(properties.windTurbine);
+        setSolarEnergyRaport(generateSolarEnergyRaport(data.weatherConditions, properties.solarPanel));
+        setWindEnergyRaport(generateWindEnergyRaport(data.weatherConditions, properties.windTurbine));
+    };
 
     return (
-        <>
-        </>
+        <div className='raport-container'>
+            <Grid2 container rowSpacing={2} columnSpacing={8} overflow={'hidden'}>
+
+                <RaportHeader data={{
+                    latitude: data.latitude,
+                    longitude: data.longitude,
+                    code: data.code
+                }} />
+
+                <RaportProperties data={{
+                    windTurbine: windTurbineProperties,
+                    solarPanel: solarPanelProperties
+                }} 
+                callback={handlePropertiesCallback}
+                />
+
+                <RaportCharts data={{
+                    solarEnergyRaport: solarEnergyRaport as energyRaport[],
+                    windEnergyRaport: windEnergyRaport as energyRaport[]
+                }} />
+
+            </Grid2>
+        </div>
     );
 }
 
