@@ -15,6 +15,9 @@ function RaportByLocation() {
     useEffect(() => {
         const getWeatherConditions = async () => {
             const datePagination = createPagination();
+            console.log(lat);
+            console.log(lng);
+            console.log(datePagination);
 
             datePagination.forEach(async (dateRange) => {
                 const responseJson = await fetch(`/weather/${lat}/${lng}/${dateRange.start}/${dateRange.end}`);
@@ -26,12 +29,13 @@ function RaportByLocation() {
             setWeatherData({
                 latitude: parseFloat(lat as string),
                 longitude: parseFloat(lng as string),
-                weatherConditions: weatherConditions
+                weatherConditions: weatherConditions as weatherCondition[]
             });
+            console.log(weatherConditions);
         }
     
         getWeatherConditions();
-    }, []);
+    }, [lat, lng, weatherConditions]);
 
     return (
         <>

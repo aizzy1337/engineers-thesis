@@ -1,3 +1,4 @@
+import React from "react"
 import Header from "../../features/header/header"
 import Map from '../../features/map/map'
 import './front-page.css'
