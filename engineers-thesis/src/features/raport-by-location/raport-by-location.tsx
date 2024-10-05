@@ -29,15 +29,17 @@ const RaportByLocation = () => {
                 longitude: parseFloat(lng as string),
                 weatherConditions: weatherConditions as weatherCondition[]
             });
-            setIsSet(true);
         }
     
         getWeatherConditions();
-    }, [lat, lng, weatherConditions]);
+        if(weatherConditions.length >= 365) {
+            setIsSet(true);
+        }
+    }, [lat, lng, weatherConditions, isSet]);
 
     return (
         <>
-            {(isSet) ? <Raport data={weatherData as weatherData} /> : <Loading />}
+            {(isSet && weatherData !== undefined) ? <Raport data={weatherData as weatherData} /> : <Loading />}
         </>
     );
 }
