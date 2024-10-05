@@ -7,11 +7,12 @@ import { weatherData } from "../../types/weather-data";
 import Raport from "../../pages/raport/raport";
 import React from "react";
 import Loading from "../../pages/loading/loading";
+import { testData } from "../../types/test-data";
 
 const RaportByLocation = () => {
     const { lat, lng } = useParams();
     const [weatherConditions, setWeatherConditions] = useState<weatherCondition[]>([]);
-    const [weatherData, setWeatherData] = useState<weatherData>();
+    const [weatherData, setWeatherData] = useState<weatherData>(testData);
 
     useEffect(() => {
         const getWeatherConditions = async () => {
