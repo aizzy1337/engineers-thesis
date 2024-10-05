@@ -6,8 +6,9 @@ import createPagination from "../../utils/createPagination";
 import { weatherData } from "../../types/weather-data";
 import Raport from "../../pages/raport/raport";
 import React from "react";
+import Loading from "../../pages/loading/loading";
 
-function RaportByLocation() {
+const RaportByLocation = () => {
     const { lat, lng } = useParams();
     const [weatherConditions, setWeatherConditions] = useState<weatherCondition[]>([]);
     const [weatherData, setWeatherData] = useState<weatherData>();
@@ -39,6 +40,7 @@ function RaportByLocation() {
 
     return (
         <>
+            (weatherData === undefined) ? <Loading /> :
             <Raport data={weatherData as weatherData} />
         </>
     );
