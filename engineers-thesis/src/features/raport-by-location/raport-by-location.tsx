@@ -26,18 +26,17 @@ const RaportByLocation = () => {
                 console.log(weatherConditions);
             });
 
-            setWeatherData({
-                latitude: parseFloat(lat as string),
-                longitude: parseFloat(lng as string),
-                weatherConditions: weatherConditions as weatherCondition[]
-            });
+            if(weatherConditions.length >= 50) {
+                setWeatherData({
+                    latitude: parseFloat(lat as string),
+                    longitude: parseFloat(lng as string),
+                    weatherConditions: weatherConditions as weatherCondition[]
+                });
+                setIsSet(true);
+            }
         }
     
         getWeatherConditions();
-        if(weatherData !== undefined) {
-            console.log(weatherData);
-            setIsSet(true);
-        }
     }, [lat, lng, isSet, weatherData]);
 
     return (
