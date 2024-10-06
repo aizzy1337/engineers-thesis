@@ -11,7 +11,6 @@ import createPagination from "../../utils/createPagination";
 const RaportByLocation = () => {
     const { lat, lng } = useParams();
     const [weatherData, setWeatherData] = useState<weatherData>();
-    const [isSet, setIsSet] = useState<boolean>(false);
 
     useEffect(() => {
         const weatherConditions: weatherCondition[] = [];
@@ -27,23 +26,22 @@ const RaportByLocation = () => {
                 console.log("Response: " + response);
                 console.log("Weather Conditions: " + weatherConditions);
             });
+
+            console.log("Weather Conditions End: " + weatherConditions);
+            setWeatherData({
+                latitude: parseFloat(lat as string),
+                longitude: parseFloat(lng as string),
+                weatherConditions: weatherConditions as weatherCondition[]
+            });
+            console.log("Weather Data: " + weatherData);
         }
     
         getWeatherConditions();
-        console.log("Weather Conditions End: " + weatherConditions);
-        setWeatherData({
-            latitude: parseFloat(lat as string),
-            longitude: parseFloat(lng as string),
-            weatherConditions: weatherConditions as weatherCondition[]
-        });
-        console.log("Weather Data: " + weatherData);
-        setIsSet(true);
-        console.log("Set: " + weatherData);
     }, []);
 
     return (
         <>
-            {(isSet) ? <Raport data={weatherData as weatherData} /> : <Loading />}
+            {(weatherData !== undefined) ? <Raport data={weatherData as weatherData} /> : <Loading />}
         </>
     );
 }
