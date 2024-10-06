@@ -35,7 +35,13 @@ const Raport: React.FC<weatherDataProps> = ({data}) => {
 
     const sendData = async (code: string) => {
         try {
-            const response = await fetch(`/raport/${code}/${JSON.stringify(data)}`);
+            const response = await fetch(`/raport/${code}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(data)
+            });
             if (!response.ok) {
                 throw new Error(`Failed to fetch data`);
             }

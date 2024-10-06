@@ -15,7 +15,9 @@ const RaportByCode = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`/raport/${code}`);
+                const response = await fetch(`/raport/${code}`, {
+                    method: 'GET'
+                });
                 if (!response.ok) {
                     throw new Error(`Failed to fetch data`);
                 }
