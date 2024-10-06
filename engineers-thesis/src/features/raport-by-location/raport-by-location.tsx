@@ -22,6 +22,8 @@ const RaportByLocation = () => {
                 const responseJson = await fetch(`/weather/${lat}/${lng}/${dateRange.start}/${dateRange.end}`);
                 const response = await jsonResponseConverter(responseJson);
                 weatherConditions.push(...response);
+                console.log(response);
+                console.log(weatherConditions);
             });
 
             setWeatherData({
@@ -32,7 +34,8 @@ const RaportByLocation = () => {
         }
     
         getWeatherConditions();
-        if(weatherData !== undefined && weatherData.weatherConditions.length >= 365) {
+        if(weatherData !== undefined) {
+            console.log(weatherData);
             setIsSet(true);
         }
     }, [lat, lng, isSet, weatherData]);
