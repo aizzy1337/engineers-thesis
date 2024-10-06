@@ -38,8 +38,8 @@ const RaportByLocation = () => {
         });
         console.log("Weather Data: " + weatherData);
         setIsSet(true);
-        console.log("Set: " + isSet);
-    }, [lat, lng, isSet, weatherData]);
+        console.log("Set: " + weatherData);
+    }, []);
 
     return (
         <>
