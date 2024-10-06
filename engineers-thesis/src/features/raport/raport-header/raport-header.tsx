@@ -52,7 +52,7 @@ const RaportHeader: React.FC<raportHeaderProps> = ({data, callback}) => {
                         CODE
                     </Typography>
                     <Typography variant='h5' component='h5'>
-                        {(data.code === "") ?
+                        {(data.code === undefined) ?
                         <Box component="form" onSubmit={handleSubmit} >
                             <Button variant="contained" type="submit"  id="button-raport">
                                 Save for later
