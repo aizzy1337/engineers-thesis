@@ -7,8 +7,8 @@ function generateWindEnergyRaport(weatherConditions: weatherCondition[], windTur
     const windEnergyRaport: energyRaport[] = [];
 
     weatherConditions.forEach((weatherCondition) => {
-        if(weatherCondition.temp > windTurbineProperties.T_MAX || weatherCondition.temp < windTurbineProperties.T_MIN || weatherCondition.windspeed > windTurbineProperties.V_MAX ||
-            weatherCondition.windspeed < windTurbineProperties.V_MIN
+        if(weatherCondition.temp > windTurbineProperties.T_MAX || weatherCondition.temp < windTurbineProperties.T_MIN || weatherCondition.windspeed/3.6 > windTurbineProperties.V_MAX ||
+            weatherCondition.windspeed/3.6 < windTurbineProperties.V_MIN
         ) {
             windEnergyRaport.push({datetime: weatherCondition.datetime, power: 0});
             return;
@@ -16,7 +16,7 @@ function generateWindEnergyRaport(weatherConditions: weatherCondition[], windTur
 
         let biggerIndex = -1;
         for (let i=0; i<windTurbineProperties.power.length; i++) {
-            if (windTurbineProperties.windSpeed[i] > weatherCondition.windspeed) {
+            if (windTurbineProperties.windSpeed[i] > weatherCondition.windspeed/3.6) {
                 biggerIndex = i;
                 break;
             }
@@ -27,7 +27,7 @@ function generateWindEnergyRaport(weatherConditions: weatherCondition[], windTur
             return;
         }
 
-        const generatedPower: number = lerp(windTurbineProperties.windSpeed[biggerIndex-1], windTurbineProperties.power[biggerIndex-1], windTurbineProperties.windSpeed[biggerIndex], windTurbineProperties.power[biggerIndex], weatherCondition.windspeed);
+        const generatedPower: number = lerp(windTurbineProperties.windSpeed[biggerIndex-1], windTurbineProperties.power[biggerIndex-1], windTurbineProperties.windSpeed[biggerIndex], windTurbineProperties.power[biggerIndex], weatherCondition.windspeed/3.6);
 
         windEnergyRaport.push({datetime: weatherCondition.datetime, power: generatedPower});
     });

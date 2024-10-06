@@ -328,6 +328,7 @@ const RaportProperties: React.FC<raportPropertiesProps> = ({data, callback}) => 
                           }}
                         />
                       </Box>
+                      <Box sx={{ display: 'flex', gap: 2 }}>
                       <TextField
                         id="text-field"
                         label="Irradiance at Standard Test Conditions"
@@ -342,6 +343,16 @@ const RaportProperties: React.FC<raportPropertiesProps> = ({data, callback}) => 
                           },
                         }}
                       />
+                      <TextField
+                        id="text-field"
+                        label="Amount of solar panels"
+                        fullWidth
+                        margin="normal"
+                        type="number"
+                        value={solarPanelProperties.amount}
+                        onChange={handleChangeSolarPanel('amount')}
+                      />
+                      </Box>
                       
                         <Button variant="contained" type="submit" fullWidth sx={{ mt: 2 }} id="button">
                           Submit

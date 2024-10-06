@@ -10,7 +10,6 @@ import Loading from "../../pages/loading/loading";
 
 const RaportByLocation = () => {
     const { lat, lng } = useParams();
-    const [weatherConditions, setWeatherConditions] = useState<weatherCondition[]>([]);
     const [weatherData, setWeatherData] = useState<weatherData>();
     const [isSet, setIsSet] = useState<boolean>(false);
 
@@ -18,10 +17,11 @@ const RaportByLocation = () => {
         const getWeatherConditions = async () => {
             const datePagination = createPagination();
 
+            const weatherConditions: weatherCondition[] = [];
             datePagination.forEach(async (dateRange) => {
                 const responseJson = await fetch(`/weather/${lat}/${lng}/${dateRange.start}/${dateRange.end}`);
                 const response = await jsonResponseConverter(responseJson);
-                setWeatherConditions([...weatherConditions, ...response])
+                weatherConditions.push(...response);
             });
 
             setWeatherData({
@@ -32,14 +32,14 @@ const RaportByLocation = () => {
         }
     
         getWeatherConditions();
-        if(weatherConditions.length >= 365) {
+        if(weatherData !== undefined && weatherData.weatherConditions.length >= 365) {
             setIsSet(true);
         }
-    }, [lat, lng, weatherConditions, isSet]);
+    }, [lat, lng, isSet, weatherData]);
 
     return (
         <>
-            {(isSet && weatherData !== undefined) ? <Raport data={weatherData as weatherData} /> : <Loading />}
+            {(isSet) ? <Raport data={weatherData as weatherData} /> : <Loading />}
         </>
     );
 }
