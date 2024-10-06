@@ -2,7 +2,7 @@ import { weatherData } from "./weather-data";
 
 export const testData: weatherData = {
     latitude: 20,
-    longitude: 50,
+    longitude: 51,
     weatherConditions: [
       {
         "datetime": "2023-10-06",
@@ -2207,5 +2207,5 @@ export const testData: weatherData = {
         "solarradiation": 39.1
     }
       ],
-    code: "373256"
+    code: ""
 }

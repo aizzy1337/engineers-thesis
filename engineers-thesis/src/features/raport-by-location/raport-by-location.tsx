@@ -12,8 +12,8 @@ import createPagination from "../../utils/createPagination";
 const RaportByLocation = () => {
     const { lat, lng } = useParams();
     const [weatherData, setWeatherData] = useState<weatherData | null>(null);
-    const [loading, setLoading] = useState<boolean>(true); // Track loading state
-    const [error, setError] = useState<string | null>(null); // Track error state
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchWeatherConditions = async () => {
@@ -57,7 +57,7 @@ const RaportByLocation = () => {
         return <ErrorComponent />;
     }
 
-    return weatherData ? <Raport data={weatherData} /> : <div>No weather data available.</div>;
+    return weatherData ? <Raport data={weatherData} /> : <ErrorComponent />;
 };
 
 export default RaportByLocation;

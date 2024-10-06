@@ -1,5 +1,6 @@
 export interface raportHeaderProps {
-    data: raportHeader
+    data: raportHeader;
+    callback: (header: raportHeader) => void;
 }
 
 export interface raportHeader {

@@ -1,9 +1,25 @@
-import { Grid2, Paper, Typography, useMediaQuery } from "@mui/material";
+import { Box, Button, Grid2, Paper, Typography, useMediaQuery } from "@mui/material";
 import { raportHeaderProps } from "../../../types/raport-header-props"
 import React from "react";
+import generateGUID from "../../../utils/generateGuid";
+import "./raport-header.css"
 
-const RaportHeader: React.FC<raportHeaderProps> = ({data}) => {
+const RaportHeader: React.FC<raportHeaderProps> = ({data, callback}) => {
     const screenSize = useMediaQuery("(min-width:1025px)");
+
+    const sendData = (guid: string) => {
+        callback({
+            longitude: data.longitude,
+            latitude: data.latitude,
+            code: guid
+        });
+    };
+
+    const handleSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        const guid = generateGUID();
+        sendData(guid);
+    };
 
     return (
         <>
@@ -36,7 +52,13 @@ const RaportHeader: React.FC<raportHeaderProps> = ({data}) => {
                         CODE
                     </Typography>
                     <Typography variant='h5' component='h5'>
-                        {data.code}
+                        {(data.code === "") ?
+                        <Box component="form" onSubmit={handleSubmit} >
+                            <Button variant="contained" type="submit"  id="button-raport">
+                                Save for later
+                            </Button>
+                        </Box> :
+                        data.code}
                     </Typography>
                 </Paper>
             </Grid2>

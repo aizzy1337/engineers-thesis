@@ -13,8 +13,14 @@ import { Grid2} from '@mui/material';
 import { raportProperties } from '../../types/raport-properties-props';
 import RaportProperties from '../../features/raport/raport-properties/raport-properties';
 import RaportCharts from '../../features/raport/raport-charts/raport-charts';
+import { raportHeader } from '../../types/raport-header-props';
 
 const Raport: React.FC<weatherDataProps> = ({data}) => {
+    const [raportHeader, setRaportHeader] = useState<raportHeader>({
+        longitude: data.longitude,
+        latitude: data.latitude,
+        code: data.code
+    });
     const [solarPanelProperties, setSolarPanelProperties] = useState<solarPanelProperties>(defaultSolarPanelProperties);
     const [windTurbineProperties, setWindTurbineProperties] = useState<windTurbineProperties>(defaultWindTurbineProperties);
     const [solarEnergyRaport, setSolarEnergyRaport] = useState<energyRaport[]>(generateSolarEnergyRaport(data.weatherConditions, solarPanelProperties as solarPanelProperties));
@@ -27,15 +33,33 @@ const Raport: React.FC<weatherDataProps> = ({data}) => {
         setWindEnergyRaport(generateWindEnergyRaport(data.weatherConditions, properties.windTurbine));
     };
 
+    const sendData = async (code: string) => {
+        try {
+            const response = await fetch(`/raport/${code}/${JSON.stringify(data)}`);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch data`);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleHeaderCallback = async (header: raportHeader): Promise<void> => {
+        setRaportHeader({
+            latitude: header.latitude,
+            longitude: header.longitude,
+            code: header.code
+        });
+        await sendData(header.code as string);
+    }
+
     return (
         <div className='raport-container'>
             <Grid2 container rowSpacing={2} columnSpacing={8} overflow={'hidden'}>
 
-                <RaportHeader data={{
-                    latitude: data.latitude,
-                    longitude: data.longitude,
-                    code: data.code
-                }} />
+                <RaportHeader data={raportHeader}
+                callback={handleHeaderCallback}
+                />
 
                 <RaportProperties data={{
                     windTurbine: windTurbineProperties,

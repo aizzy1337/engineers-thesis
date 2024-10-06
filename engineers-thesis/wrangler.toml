@@ -5,3 +5,7 @@ compatibility_date = "2024-09-16"
 
 [env]
 production = { }
+
+[[kv_namespaces]]
+binding = "RAPORTS"
+id = "8f8ecd9069be4fb784fb018952aaf472"

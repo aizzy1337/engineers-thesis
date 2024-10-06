@@ -7,12 +7,15 @@ import {
 } from "@react-google-maps/api";
 import "./map.css"
 import Loading from "../../pages/loading/loading";
+import { useNavigate } from "react-router-dom";
 
 export default function Map() {
 
   const [location, setLocation] = useState({ lat: 50, lng: 20 });
   const [center, setCenter] = useState({ lat: 50, lng: 20 });
+  const [raportCode, setRaportCode] = useState('');
   const autocompleteRef = useRef(null);
+  const navigate = useNavigate();
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
@@ -35,8 +38,13 @@ export default function Map() {
     setCenter(latlng);
   }
 
-  function raportCodeSubmit() {
+  const raportCodeSubmit = (event) => {
+    event.preventDefault();
+    navigate(`/raport/${raportCode}`);
+  };
 
+  function raportSubmit() {
+    navigate(`/raport/${location.lat}/${location.lng}`);
   }
 
   return (
@@ -53,9 +61,11 @@ export default function Map() {
           <input type="text" placeholder="Search for location..." className="bg-black-50 border border-white-300 text-white-900 text-lg text-center rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow shadow-blue-500/50 focus:shadow-md focus:shadow-white" id="autocomplete"/>
         </Autocomplete>
         <div className="button">
-            <button type="button" className="bg-black-50 border border-white-300 text-white-900 text-lg text-center rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow shadow-blue-500/50 focus:shadow-md focus:shadow-white hover:shadow-md hover:shadow-white">Generate raport</button>
+            <button type="button" className="bg-black-50 border border-white-300 text-white-900 text-lg text-center rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow shadow-blue-500/50 focus:shadow-md focus:shadow-white hover:shadow-md hover:shadow-white" onClick={raportSubmit}>Generate raport</button>
         </div>
-        <input type="text" placeholder="Type raport code..." className="bg-black-50 border border-white-300 text-white-900 text-lg text-center rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow shadow-blue-500/50 focus:shadow-md focus:shadow-white" id="code" onSubmit={raportCodeSubmit}/>
+        <form onSubmit={raportCodeSubmit}>
+          <input type="text" placeholder="Type raport code..." className="bg-black-50 border border-white-300 text-white-900 text-lg text-center rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 shadow shadow-blue-500/50 focus:shadow-md focus:shadow-white" id="code" value={raportCode} onChange={(e) => setRaportCode(e.target.value)}/>
+        </form>
       </div>
       
       <GoogleMap
