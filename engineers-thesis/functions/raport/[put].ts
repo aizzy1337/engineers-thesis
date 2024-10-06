@@ -1,7 +1,7 @@
 export async function onRequestPost(context) {
     const code = context.params.put;
     try {
-      const requestData = await context.request;
+      const requestData = await context.request.text();
       await context.env.RAPORTS.put(code, requestData);
 
       return new Response("Successful write", {
