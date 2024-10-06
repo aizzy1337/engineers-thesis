@@ -6,44 +6,58 @@ import { weatherData } from "../../types/weather-data";
 import Raport from "../../pages/raport/raport";
 import React from "react";
 import Loading from "../../pages/loading/loading";
+import ErrorComponent from "../../pages/error/error";
 import createPagination from "../../utils/createPagination";
 
 const RaportByLocation = () => {
     const { lat, lng } = useParams();
-    const [weatherData, setWeatherData] = useState<weatherData>();
+    const [weatherData, setWeatherData] = useState<weatherData | null>(null);
+    const [loading, setLoading] = useState<boolean>(true); // Track loading state
+    const [error, setError] = useState<string | null>(null); // Track error state
 
     useEffect(() => {
-        const weatherConditions: weatherCondition[] = [];
+        const fetchWeatherConditions = async () => {
+            try {
+                const weatherConditions: weatherCondition[] = [];
+                const datePagination = createPagination();
 
-        const getWeatherConditions = async () => {
-            const datePagination = createPagination();
-            console.log("Pagination: " + datePagination);
-            
-            datePagination.forEach(async (dateRange) => {
-                const responseJson = await fetch(`/weather/${lat}/${lng}/${dateRange.start}/${dateRange.end}`);
-                const response = await jsonResponseConverter(responseJson);
-                weatherConditions.push(...response);
-                console.log("Response: " + response);
-                console.log("Weather Conditions: " + weatherConditions);
-            });
+                const weatherPromises = datePagination.map(async (dateRange) => {
+                    const response = await fetch(`/weather/${lat}/${lng}/${dateRange.start}/${dateRange.end}`);
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch weather data for range: ${dateRange.start} - ${dateRange.end}`);
+                    }
+                    return await jsonResponseConverter(response)
+                });
 
-            console.log("Weather Conditions End: " + weatherConditions);
-            setWeatherData({
-                latitude: parseFloat(lat as string),
-                longitude: parseFloat(lng as string),
-                weatherConditions: weatherConditions as weatherCondition[]
-            });
-            console.log("Weather Data: " + weatherData);
-        }
-    
-        getWeatherConditions();
-    }, []);
+                const results = await Promise.all(weatherPromises);
+                results.forEach((result) => {
+                    weatherConditions.push(...result);
+                });
 
-    return (
-        <>
-            {(weatherData !== undefined) ? <Raport data={weatherData as weatherData} /> : <Loading />}
-        </>
-    );
-}
+                setWeatherData({
+                    latitude: parseFloat(lat as string),
+                    longitude: parseFloat(lng as string),
+                    weatherConditions: weatherConditions,
+                });
+            } catch (error) {
+                setError(`Error fetching weather data: ${(error as Error).message}`);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchWeatherConditions();
+    }, [lat, lng]);
+
+    if (loading) {
+        return <Loading />;
+    }
+
+    if (error) {
+        return <ErrorComponent />;
+    }
+
+    return weatherData ? <Raport data={weatherData} /> : <div>No weather data available.</div>;
+};
 
 export default RaportByLocation;

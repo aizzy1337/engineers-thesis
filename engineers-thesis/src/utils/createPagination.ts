@@ -1,7 +1,7 @@
 function createPagination(): Array<{ start: string, end: string }> {
   const result: Array<{ start: string, end: string }> = [];
   const now = new Date();
-  const lastYear = new Date(now.getFullYear(), now.getMonth()-2, 1);
+  const lastYear = new Date(now.getFullYear() - 1, now.getMonth(), 1);
 
   const current = new Date(lastYear);
 
