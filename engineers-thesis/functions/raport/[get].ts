@@ -1,7 +1,7 @@
 export async function onRequestGet(context) {
     const code = context.params.get;
       try {
-        const value = await context.env.RAPORT.get(code);
+        const value = await context.env.RAPORTS.get(code);
   
         if (value === null) {
           return new Response("Value not found", { status: 404 });
