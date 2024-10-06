@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { jsonResponseConverter } from "../../utils/jsonResponseConverter";
 import { weatherCondition } from "../../types/weather-condition";
-import createPagination from "../../utils/createPagination";
 import { weatherData } from "../../types/weather-data";
 import Raport from "../../pages/raport/raport";
 import React from "react";
