@@ -14,6 +14,7 @@ import { raportProperties } from '../../types/raport-properties-props';
 import RaportProperties from '../../features/raport/raport-properties/raport-properties';
 import RaportCharts from '../../features/raport/raport-charts/raport-charts';
 import { raportHeader } from '../../types/raport-header-props';
+import { weatherData } from '../../types/weather-data';
 
 const Raport: React.FC<weatherDataProps> = ({data}) => {
     const [raportHeader, setRaportHeader] = useState<raportHeader>({
@@ -33,14 +34,15 @@ const Raport: React.FC<weatherDataProps> = ({data}) => {
         setWindEnergyRaport(generateWindEnergyRaport(data.weatherConditions, properties.windTurbine));
     };
 
-    const sendData = async (code: string) => {
+    const sendData = async (weatherData: weatherData) => {
         try {
-            const response = await fetch(`/raport/${code}`, {
+            const response = await fetch(`/raport/${weatherData.code}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'x-api-key': import.meta.env.VITE_API_KEY
                   },
-                  body: JSON.stringify(data)
+                  body: JSON.stringify(weatherData)
             });
             if (!response.ok) {
                 throw new Error(`Failed to fetch data`);
@@ -56,7 +58,12 @@ const Raport: React.FC<weatherDataProps> = ({data}) => {
             longitude: header.longitude,
             code: header.code
         });
-        await sendData(header.code as string);
+        await sendData({
+            latitude: header.latitude,
+            longitude: header.longitude,
+            weatherConditions: data.weatherConditions,
+            code: header.code
+        });
     }
 
     return (

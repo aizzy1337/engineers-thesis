@@ -16,7 +16,10 @@ const RaportByCode = () => {
         const fetchData = async () => {
             try {
                 const response = await fetch(`/raport/${code}`, {
-                    method: 'GET'
+                    method: 'GET',
+                    headers: {
+                        'x-api-key': import.meta.env.VITE_API_KEY
+                    }
                 });
                 if (!response.ok) {
                     throw new Error(`Failed to fetch data`);

@@ -1,7 +1,7 @@
 import { createTheme, Grid2, Paper, ThemeProvider, Typography} from "@mui/material";
 import { raportCharts, raportChartsProps } from "../../../types/raport-charts-props";
 import React, { useEffect, useState } from "react";
-import { BarChart, LineChart, PieChart} from "@mui/x-charts";
+import { BarChart, LineChart, pieArcLabelClasses, PieChart} from "@mui/x-charts";
 
 const RaportCharts: React.FC<raportChartsProps> = ({data}) => {
     const [propsData, setPropsData] = useState<raportCharts>(data);
@@ -99,14 +99,23 @@ const RaportCharts: React.FC<raportChartsProps> = ({data}) => {
                         Total Energy Distribution
                     </Typography>
                     <PieChart
-                        series={[
-                            {
+                        series={[{
+                                arcLabel: (item) => `${item.value.toFixed(2)} kWh`,
+                                arcLabelMinAngle: 35,
+                                arcLabelRadius: '60%',
                                 data: [
-                                { label: "Wind Energy", value: totalWindEnergy, color: "#4a68ff" },
-                                { label: "Solar Energy", value: totalSolarEnergy, color: "#fff74a" },
-                                ]
-                        },
-                        ]}
+                                { label: "Wind Energy", value: totalWindEnergy, color: "#007cff90" },
+                                { label: "Solar Energy", value: totalSolarEnergy, color: "#f8ff0080" },
+                                ],
+                                innerRadius: 30,
+                                paddingAngle: 5,
+                                cornerRadius: 5
+                        },]}
+                        sx={{
+                            [`& .${pieArcLabelClasses.root}`]: {
+                              fontWeight: 'bold',
+                            },
+                          }}
                         height={300}
                         width={width * 0.6}
                         />

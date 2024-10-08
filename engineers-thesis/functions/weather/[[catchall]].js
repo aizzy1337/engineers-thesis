@@ -1,4 +1,11 @@
 export async function onRequest(context) {
+  const apiKey = context.request.headers.get('x-api-key');
+  const validApiKey = context.env.VITE_API_KEY;
+
+  if (!apiKey || apiKey !== validApiKey) {
+    return new Response('Forbidden', { status: 403 });
+  }
+
   const latitude = context.params.catchall[0];
   const longitude = context.params.catchall[1];
   const startDate = context.params.catchall[2];
