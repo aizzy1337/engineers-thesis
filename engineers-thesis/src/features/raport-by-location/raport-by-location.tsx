@@ -22,11 +22,7 @@ const RaportByLocation = () => {
                 const datePagination = createPagination();
 
                 const weatherPromises = datePagination.map(async (dateRange) => {
-                    const response = await fetch(`/weather/${lat}/${lng}/${dateRange.start}/${dateRange.end}`, {
-                        headers: {
-                            'x-api-key': import.meta.env.VITE_API_KEY
-                        }
-                    });
+                    const response = await fetch(`/weather/${lat}/${lng}/${dateRange.start}/${dateRange.end}`);
                     if (!response.ok) {
                         throw new Error(`Failed to fetch weather data for range: ${dateRange.start} - ${dateRange.end}`);
                     }

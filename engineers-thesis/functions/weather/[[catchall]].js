@@ -1,10 +1,10 @@
 export async function onRequest(context) {
-  const apiKey = context.request.headers.get('x-api-key');
-  const validApiKey = context.env.VITE_API_KEY;
+  //const apiKey = context.request.headers.get('x-api-key');
+  //const validApiKey = context.env.VITE_API_KEY;
 
-  if (!apiKey || apiKey !== validApiKey) {
-    return new Response('Forbidden', { status: 403 });
-  }
+  //if (!apiKey || apiKey !== validApiKey) {
+  //  return new Response('Forbidden', { status: 403 });
+  //}
 
   const latitude = context.params.catchall[0];
   const longitude = context.params.catchall[1];
@@ -20,7 +20,7 @@ export async function onRequest(context) {
   });
 
   response = new Response(response.body, response);
-  response.headers.set("Cache-Control", "max-age=2592000");
+  response.headers.set("Cache-Control", "public, max-age=2592000, s-maxage=2592000");
 
   return response;
 }
