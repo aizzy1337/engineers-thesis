@@ -1,8 +1,8 @@
 import { weatherData } from "./weather-data";
 
 export const testData: weatherData = {
-    latitude: 20,
-    longitude: 51,
+    latitude: 50,
+    longitude: 20,
     weatherConditions: [
       {
         "datetime": "2023-10-06",

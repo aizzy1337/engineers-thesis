@@ -12,5 +12,7 @@ export const defaultSolarPanelProperties: solarPanelProperties = {
     T_STD_NOCT: 20,
     Irridance_NOCT: 800,
     Irridance_STC: 1000,
-    amount: 10
+    amount: 10,
+    slope: 35,
+    azimuth: 0
 }

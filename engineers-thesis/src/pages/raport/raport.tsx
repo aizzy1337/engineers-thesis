@@ -3,8 +3,8 @@ import './raport.css'
 import { energyRaport } from '../../types/energy-raport';
 import { solarPanelProperties } from '../../types/solar-panel-properties';
 import { windTurbineProperties } from '../../types/wind-turbine-properties';
-import generateSolarEnergyRaport from '../../utils/generateSolarEnergyRaport';
-import generateWindEnergyRaport from '../../utils/generateWindEnergyRaport';
+import generateSolarEnergyRaport from '../../utils/solar-energy-raport/generateSolarEnergyRaport';
+import generateWindEnergyRaport from '../../utils/wind-energy-raport/generateWindEnergyRaport';
 import { defaultSolarPanelProperties } from '../../types/default-solar-panel-properties';
 import { defaultWindTurbineProperties } from '../../types/default-wind-turbine-properties';
 import { weatherDataProps } from '../../types/weather-data-props';
@@ -24,13 +24,13 @@ const Raport: React.FC<weatherDataProps> = ({data}) => {
     });
     const [solarPanelProperties, setSolarPanelProperties] = useState<solarPanelProperties>(defaultSolarPanelProperties);
     const [windTurbineProperties, setWindTurbineProperties] = useState<windTurbineProperties>(defaultWindTurbineProperties);
-    const [solarEnergyRaport, setSolarEnergyRaport] = useState<energyRaport[]>(generateSolarEnergyRaport(data.weatherConditions, solarPanelProperties as solarPanelProperties));
+    const [solarEnergyRaport, setSolarEnergyRaport] = useState<energyRaport[]>(generateSolarEnergyRaport(data.weatherConditions, solarPanelProperties as solarPanelProperties, data.latitude));
     const [windEnergyRaport, setWindEnergyRaport] = useState<energyRaport[]>(generateWindEnergyRaport(data.weatherConditions, windTurbineProperties as windTurbineProperties));
 
     const handlePropertiesCallback = (properties: raportProperties): void => {
         setSolarPanelProperties(properties.solarPanel);
         setWindTurbineProperties(properties.windTurbine);
-        setSolarEnergyRaport(generateSolarEnergyRaport(data.weatherConditions, properties.solarPanel));
+        setSolarEnergyRaport(generateSolarEnergyRaport(data.weatherConditions, properties.solarPanel, data.latitude));
         setWindEnergyRaport(generateWindEnergyRaport(data.weatherConditions, properties.windTurbine));
     };
 

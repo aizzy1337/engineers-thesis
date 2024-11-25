@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Grid2, InputAdornment, Paper, TextField, Typography, useMediaQuery } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Grid2, IconButton, InputAdornment, Paper, TextField, Typography, useMediaQuery } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { raportPropertiesProps } from "../../../types/raport-properties-props";
 import { useEffect, useState } from 'react';
@@ -8,6 +8,7 @@ import { defaultWindTurbineProperties } from '../../../types/default-wind-turbin
 import { defaultSolarPanelProperties } from '../../../types/default-solar-panel-properties';
 import './raport-properties.css'
 import React from 'react';
+import { Add, Delete } from '@mui/icons-material';
 
 const RaportProperties: React.FC<raportPropertiesProps> = ({data, callback}) => {
     const screenSize = useMediaQuery("(min-width:1025px)");
@@ -33,8 +34,42 @@ const RaportProperties: React.FC<raportPropertiesProps> = ({data, callback}) => 
         }));
       };
 
+    const handleFieldChange = (
+        field: keyof windTurbineProperties,
+        index: number,
+        value: number
+      ) => {
+        const updatedArray = [...windTurbineProperties[field] as number[]];
+        updatedArray[index] = value;
+        handleChangeWindTurbine(field, true)({
+          target: { value: updatedArray.join(",") },
+        });
+      };
+    
+    const handleAddField = () => {
+        const newWindSpeed = [...(windTurbineProperties.windSpeed || []), 0];
+        const newPower = [...(windTurbineProperties.power || []), 0];
+        handleChangeWindTurbine("windSpeed", true)({
+          target: { value: newWindSpeed.join(",") },
+        });
+        handleChangeWindTurbine("power", true)({
+          target: { value: newPower.join(",") },
+        });
+      };
+    
+    const handleRemoveField = (index: number) => {
+        const newWindSpeed = (windTurbineProperties.windSpeed || []).filter((_, i) => i !== index);
+        const newPower = (windTurbineProperties.power || []).filter((_, i) => i !== index);
+        handleChangeWindTurbine("windSpeed", true)({
+          target: { value: newWindSpeed.join(",") },
+        });
+        handleChangeWindTurbine("power", true)({
+          target: { value: newPower.join(",") },
+        });
+      };
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const handleChangeSolarPanel = (field: keyof solarPanelProperties, isArray = false) => (event: any) => {
+    const handleChangeSolarPanel = (field: keyof solarPanelProperties, isArray = false) => (event: any) => {
         const value = event.target.value;
         setSolarPanelProperties((prevData) => ({
           ...prevData,
@@ -70,32 +105,93 @@ const RaportProperties: React.FC<raportPropertiesProps> = ({data, callback}) => 
                     </AccordionSummary>
                     <AccordionDetails>
                       <Box component="form" onSubmit={handleSubmit} id="properties-box">
-                        <TextField
-                          id="text-field"
-                          label="Power"
-                          fullWidth
-                          margin="normal"
-                          value={windTurbineProperties.power.join(',')}
-                          onChange={handleChangeWindTurbine('power', true)}
-                          slotProps={{
-                            input: {
-                              startAdornment: <InputAdornment position="start">W</InputAdornment>,
-                            },
-                          }}
-                        />
-                        <TextField
-                          id="text-field"
-                          label="Wind Speed"
-                          fullWidth
-                          margin="normal"
-                          value={windTurbineProperties.windSpeed.join(',')}
-                          onChange={handleChangeWindTurbine('windSpeed', true)}
-                          slotProps={{
-                            input: {
-                              startAdornment: <InputAdornment position="start"><sup>m</sup>&frasl;<sub>s</sub></InputAdornment>,
-                            },
-                          }}
-                        />
+                      <Accordion sx={{ mt: 2 }} id="accordion">
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="wind-speed-power-content"
+                          id="wind-speed-power-header"
+                        >
+                          <Typography>
+                            Wind Speed and Power
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          {(windTurbineProperties.windSpeed || []).map((speed, index) => (
+                            <Box
+                              key={index}
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                                mb: 1,
+                                flexWrap: "wrap",
+                              }}
+                            >
+                            <TextField
+                              id={`wind-speed-${index}`}
+                              label="Wind Speed"
+                              variant="outlined"
+                              size="small"
+                              type="number"
+                              sx={{ flex: 1 }}
+                              slotProps={{
+                                input: {
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      <sup>m</sup>&frasl;<sub>s</sub>
+                                    </InputAdornment>
+                                  ),
+                                }
+                              }}
+                              value={speed}
+                              onChange={(e) =>
+                                handleFieldChange("windSpeed", index, parseFloat(e.target.value) || 0)
+                              }
+                            />
+                            <TextField
+                              id={`power-${index}`}
+                              label="Power"
+                              variant="outlined"
+                              size="small"
+                              type="number"
+                              sx={{ flex: 1 }}
+                              slotProps={{
+                                input: {
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      W
+                                    </InputAdornment>
+                                  ),
+                                }
+                              }}
+                              value={(windTurbineProperties.power || [])[index] || ""}
+                              onChange={(e) =>
+                                handleFieldChange("power", index, parseFloat(e.target.value) || 0)
+                              }
+                            />
+                            <IconButton
+                              color="error"
+                              size="small"
+                              onClick={() => handleRemoveField(index)}
+                              disabled={(windTurbineProperties.windSpeed || []).length === 1}
+                            >
+                              <Delete fontSize="small" />
+                            </IconButton>
+                            </Box>
+                          ))}
+                          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+                            <Button
+                              startIcon={<Add />}
+                              variant="outlined"
+                              size="small"
+                              onClick={handleAddField}
+                              sx={{color: 'black', border: 'black'}}
+                            >
+                              Add Pair
+                            </Button>
+                          </Box>
+                        </AccordionDetails>
+                      </Accordion>
                         <Box sx={{ display: 'flex', gap: 2 }}>
                           <TextField
                             id="text-field"
@@ -152,6 +248,22 @@ const RaportProperties: React.FC<raportPropertiesProps> = ({data, callback}) => 
                             slotProps={{
                               input: {
                                 startAdornment: <InputAdornment position="start"><sup>m</sup>&frasl;<sub>s</sub></InputAdornment>,
+                              },
+                            }}
+                          />
+                        </Box>
+                        <Box sx={{ display: 'flex', gap: 2 }}>
+                          <TextField
+                            id="text-field"
+                            label="Diameter of Propellers"
+                            fullWidth
+                            margin="normal"
+                            type="number"
+                            value={windTurbineProperties.diameter}
+                            onChange={handleChangeWindTurbine('diameter')}
+                            slotProps={{
+                              input: {
+                                startAdornment: <InputAdornment position="start">m</InputAdornment>,
                               },
                             }}
                           />
@@ -351,6 +463,36 @@ const RaportProperties: React.FC<raportPropertiesProps> = ({data, callback}) => 
                         type="number"
                         value={solarPanelProperties.amount}
                         onChange={handleChangeSolarPanel('amount')}
+                      />
+                      </Box>
+                      <Box sx={{ display: 'flex', gap: 2 }}>
+                      <TextField
+                        id="text-field"
+                        label="Slope of a Panel"
+                        fullWidth
+                        margin="normal"
+                        type="number"
+                        value={solarPanelProperties.slope}
+                        onChange={handleChangeSolarPanel('slope')}
+                        slotProps={{
+                          input: {
+                            startAdornment: <InputAdornment position="start"><sup>o</sup></InputAdornment>,
+                          },
+                        }}
+                      />
+                      <TextField
+                        id="text-field"
+                        label="Azimuth of a Panel"
+                        fullWidth
+                        margin="normal"
+                        type="number"
+                        value={solarPanelProperties.azimuth}
+                        onChange={handleChangeSolarPanel('azimuth')}
+                        slotProps={{
+                          input: {
+                            startAdornment: <InputAdornment position="start"><sup>o</sup></InputAdornment>,
+                          },
+                        }}
                       />
                       </Box>
                       

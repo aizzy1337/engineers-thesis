@@ -55,7 +55,7 @@ const RaportCharts: React.FC<raportChartsProps> = ({data}) => {
         return () => window.removeEventListener("resize", handleResize);
     }, [data, width]);
 
-    return (                                                                                                                                                      
+    return (                                                                        
         <>
             <Grid2 size={12}>
             <ThemeProvider theme={theme}>

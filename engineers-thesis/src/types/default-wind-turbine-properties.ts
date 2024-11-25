@@ -6,5 +6,6 @@ export const defaultWindTurbineProperties: windTurbineProperties = {
     T_MIN: -40,
     T_MAX: 60,
     V_MIN: 3,
-    V_MAX: 25
+    V_MAX: 25,
+    diameter: 4
 }

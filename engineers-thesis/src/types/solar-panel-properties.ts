@@ -10,5 +10,7 @@ export interface solarPanelProperties {
     T_STD_NOCT: number,
     Irridance_NOCT: number,
     Irridance_STC: number,
-    amount: number
+    amount: number,
+    slope: number,
+    azimuth: number
 }
