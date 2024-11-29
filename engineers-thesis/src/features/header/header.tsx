@@ -6,9 +6,7 @@ export default function Header() {
   const [potential, setPotential] = useState(null);
   
   const handleEvaluate = async () => {
-    const pyodide = await loadPyodide(
-      {indexURL: "https://cdn.jsdelivr.net/pyodide/v0.21.3/full/"}
-    );
+    const pyodide = await loadPyodide();
     await pyodide.loadPackage('numpy');
     await pyodide.loadPackage('scipy');
     await pyodide.loadPackage('micropip');
