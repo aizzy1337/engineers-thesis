@@ -6,7 +6,9 @@ export default function Header() {
   const [potential, setPotential] = useState(null);
   
   const handleEvaluate = async () => {
-    const pyodide = await loadPyodide();
+    const pyodide = await loadPyodide({
+      indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/"
+    });
     await pyodide.loadPackage('numpy');
     await pyodide.loadPackage('scipy');
     await pyodide.loadPackage('micropip');
@@ -14,7 +16,7 @@ export default function Header() {
     await micropip.install('scikit-fuzzy');
     await micropip.install('networkx');
 
-    pyodide.runPythonAsync(
+    await pyodide.runPythonAsync(
       `
 import numpy as np
 import skfuzzy as fuzz
@@ -72,7 +74,6 @@ def evaluate_fuzzy(solar_insolation_value, shade_level_value, panel_orientation_
     energy_sim.input['panel_orientation'] = panel_orientation_value
     energy_sim.compute()
     return energy_sim.output['energy_potential']
-
 `
     );
     
