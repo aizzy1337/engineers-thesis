@@ -1,4 +1,5 @@
 import './header.css'
+import { loadPyodide } from "pyodide";
 import { useState } from 'react';
 
 export default function Header() {
@@ -15,7 +16,7 @@ export default function Header() {
     await micropip.install('scikit-fuzzy');
     await micropip.install('networkx');
 
-    pyodide.runPython(
+    pyodide.runPythonAsync(
       `
 import numpy as np
 import skfuzzy as fuzz
