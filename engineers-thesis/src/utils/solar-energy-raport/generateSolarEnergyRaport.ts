@@ -8,7 +8,8 @@ import { calculateTemperatureFactor } from "./calculateTemperatureFactor";
 function generateSolarEnergyRaport(
     weatherConditions: weatherCondition[],
     solarPanelProperties: solarPanelProperties,
-    latitude: number
+    latitude: number,
+    byArea: boolean = true
 ): energyRaport[] {
     const solarEnergyRaport: energyRaport[] = [];
 
@@ -26,15 +27,14 @@ function generateSolarEnergyRaport(
             weatherCondition,
             solarPanelProperties,
             temperatureFactor,
-            angleEffect
+            angleEffect,
+            byArea
         );
 
         solarEnergyRaport.push({
             datetime: weatherCondition.datetime,
             power: Math.max(0, 
-                Math.min(
-                    generatedPower * solarPanelProperties.amount, solarPanelProperties.P_MAX * solarPanelProperties.amount
-                ))
+                generatedPower * solarPanelProperties.amount / 1000)
         });
     });
 

@@ -19,8 +19,8 @@ export function calculateTemperatureFactor(
     for (let hour = 0; hour < 24; hour++) {
         const temp = calculateTemperatureByHour(
             hour,
-            parseInt(weatherCondition.sunrise.substring(0, 2), 10),
-            parseInt(weatherCondition.sunset.substring(0, 2), 10),
+            parseInt(weatherCondition.sunrise.substring(0, 2)),
+            parseInt(weatherCondition.sunset.substring(0, 2)),
             weatherCondition.tempmin,
             weatherCondition.tempmax
         );
@@ -30,7 +30,7 @@ export function calculateTemperatureFactor(
         }
         else {
             const solarPanelTemperature = temp + noctAdjustment;
-            const factor = 1 + solarPanelProperties.B_STC *       (solarPanelTemperature - solarPanelProperties.T_STC);
+            const factor = 1 + solarPanelProperties.B_STC * (solarPanelTemperature - solarPanelProperties.T_STC);
 
             temperatureFactors.push(factor);
         }

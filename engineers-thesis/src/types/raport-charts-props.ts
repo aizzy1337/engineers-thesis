@@ -5,6 +5,8 @@ export interface raportChartsProps {
 }
 
 export interface raportCharts {
-    solarEnergyRaport: energyRaport[],
-    windEnergyRaport: energyRaport[]
+    solarEnergyRaportByArea: energyRaport[],
+    solarEnergyRaportByPeak: energyRaport[],
+    windEnergyRaportByCurve: energyRaport[],
+    windEnergyRaportByArea: energyRaport[],
 }

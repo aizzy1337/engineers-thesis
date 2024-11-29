@@ -6,5 +6,7 @@ export interface weatherCondition {
     windspeed: number,
     solarradiation: number,
     sunrise: string,
-    sunset: string
+    sunset: string,
+    pressure: number,
+    humidity: number
 }

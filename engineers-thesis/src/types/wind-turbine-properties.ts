@@ -5,5 +5,7 @@ export interface windTurbineProperties {
     T_MAX: number,
     V_MIN: number,
     V_MAX: number,
-    diameter: number
+    diameter: number,
+    systemLoss: number,
+    efficiency: number
 }

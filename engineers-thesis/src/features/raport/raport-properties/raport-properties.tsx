@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Grid2, IconButton, InputAdornment, Paper, TextField, Typography, useMediaQuery } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, FormControl, Grid2, IconButton, InputAdornment, InputLabel, MenuItem, Paper, Select, TextField, Typography, useMediaQuery } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { raportPropertiesProps } from "../../../types/raport-properties-props";
 import { useEffect, useState } from 'react';
@@ -267,8 +267,32 @@ const RaportProperties: React.FC<raportPropertiesProps> = ({data, callback}) => 
                               },
                             }}
                           />
+                          <TextField
+                            id="text-field"
+                            label="System Loss"
+                            fullWidth
+                            margin="normal"
+                            type="number"
+                            value={windTurbineProperties.systemLoss}
+                            onChange={handleChangeWindTurbine('systemLoss')}
+                          />
                         </Box>
-
+                        <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                          <FormControl fullWidth>
+                            <InputLabel id="turbine-selector-label">Type of Wind Turbine</InputLabel>
+                            <Select
+                              labelId="turbine-selector-label"
+                              value={windTurbineProperties.efficiency}
+                              onChange={handleChangeWindTurbine('efficiency')}
+                            >
+                              <MenuItem value={0.45}>Turbine with 2 blades</MenuItem>
+                              <MenuItem value={0.425}>Turbine with 3 blades</MenuItem>
+                              <MenuItem value={0.3}>Multi-bladed turbine</MenuItem>
+                              <MenuItem value={0.35}>Darrieus turbine</MenuItem>
+                              <MenuItem value={0.2}>Savonius turbine</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Box>
                         <Button variant="contained" type="submit" fullWidth sx={{ mt: 2 }} id="button">
                           Submit
                         </Button>
@@ -493,6 +517,17 @@ const RaportProperties: React.FC<raportPropertiesProps> = ({data, callback}) => 
                             startAdornment: <InputAdornment position="start"><sup>o</sup></InputAdornment>,
                           },
                         }}
+                      />
+                      </Box>
+                      <Box sx={{ display: 'flex', gap: 2 }}>
+                      <TextField
+                        id="text-field"
+                        label="System Loss"
+                        fullWidth
+                        margin="normal"
+                        type="number"
+                        value={solarPanelProperties.systemLoss}
+                        onChange={handleChangeSolarPanel('systemLoss')}
                       />
                       </Box>
                       

@@ -35,7 +35,7 @@ const RaportHeader: React.FC<raportHeaderProps> = ({data, callback}) => {
                         LOCATION
                     </Typography>
                     <Typography variant='h5' component='h5'>
-                        Lat: {data.latitude}° | Lng: {data.longitude}°
+                        {data.latitude}° | {data.longitude}°
                     </Typography>
                 </Paper>
             </Grid2>

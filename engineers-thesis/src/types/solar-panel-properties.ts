@@ -12,5 +12,6 @@ export interface solarPanelProperties {
     Irridance_STC: number,
     amount: number,
     slope: number,
-    azimuth: number
+    azimuth: number,
+    systemLoss: number
 }

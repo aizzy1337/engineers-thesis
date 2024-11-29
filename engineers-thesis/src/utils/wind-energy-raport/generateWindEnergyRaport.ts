@@ -1,40 +1,38 @@
 import { energyRaport } from "../../types/energy-raport";
 import { weatherCondition } from "../../types/weather-condition";
 import { windTurbineProperties } from "../../types/wind-turbine-properties";
-import lerp from "./linearInterpolationFunction";
+import { powerOutput } from "./calculatePowerOutput";
+import { calculateScaleParameter } from "./calculateScaleParameter";
+import { calculateShapeParameter } from "./calculateShapeParameter";
+import { generateHourlyWindSpeeds } from "./generateHourlyWindSpeeds";
 
 export function generateWindEnergyRaport(
     weatherConditions: weatherCondition[],
-    windTurbineProps: windTurbineProperties
+    windTurbineProps: windTurbineProperties,
+    byCurve: boolean = true
 ): energyRaport[] {
     return weatherConditions.map((weather) => {
-        const windSpeedInMs = weather.windspeed / 3.6;
-
-        if (weather.temp > windTurbineProps.T_MAX ||
-            weather.temp < windTurbineProps.T_MIN ||
-            windSpeedInMs > windTurbineProps.V_MAX ||
-            windSpeedInMs < windTurbineProps.V_MIN)
-        {
+        if (weather.tempmin < windTurbineProps.T_MIN || weather.tempmax > windTurbineProps.T_MAX) {
             return { datetime: weather.datetime, power: 0 };
         }
 
-        const higherIndex = windTurbineProps.windSpeed.findIndex(
-            (speed) => speed > windSpeedInMs
-        );
+        const windSpeedAvg = weather.windspeed / 3.6;
+        const windSpeedsForDay = Array.from({ length: 24 }, () => windSpeedAvg);
+        const k = calculateShapeParameter(windSpeedsForDay);
+        const c = calculateScaleParameter(windSpeedAvg, k);
 
-        if (higherIndex <= 0) {
-            return { datetime: weather.datetime, power: 0 };
-        }
+        const hourlySpeeds = generateHourlyWindSpeeds(k, c);
 
-        const generatedPower = lerp(
-            windTurbineProps.windSpeed[higherIndex - 1],
-            windTurbineProps.power[higherIndex - 1],
-            windTurbineProps.windSpeed[higherIndex],
-            windTurbineProps.power[higherIndex],
-            windSpeedInMs
-        );
+        const dailyEnergy = hourlySpeeds.reduce((totalEnergy, speed) => {
+            if (speed < windTurbineProps.V_MIN || speed > windTurbineProps.V_MAX) {
+                return totalEnergy;
+            }
 
-        return { datetime: weather.datetime, power: generatedPower };
+            const generatedPower = powerOutput(speed, weather, windTurbineProps, byCurve);
+            return totalEnergy + generatedPower;
+        }, 0);
+
+        return { datetime: weather.datetime, power: dailyEnergy / 1000 };
     });
 }
 

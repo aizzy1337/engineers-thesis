@@ -22,16 +22,23 @@ const Raport: React.FC<weatherDataProps> = ({data}) => {
         latitude: data.latitude,
         code: data.code
     });
+
     const [solarPanelProperties, setSolarPanelProperties] = useState<solarPanelProperties>(defaultSolarPanelProperties);
     const [windTurbineProperties, setWindTurbineProperties] = useState<windTurbineProperties>(defaultWindTurbineProperties);
-    const [solarEnergyRaport, setSolarEnergyRaport] = useState<energyRaport[]>(generateSolarEnergyRaport(data.weatherConditions, solarPanelProperties as solarPanelProperties, data.latitude));
-    const [windEnergyRaport, setWindEnergyRaport] = useState<energyRaport[]>(generateWindEnergyRaport(data.weatherConditions, windTurbineProperties as windTurbineProperties));
+
+    const [solarEnergyRaportByArea, setSolarEnergyRaportByArea] = useState<energyRaport[]>(generateSolarEnergyRaport(data.weatherConditions, solarPanelProperties as solarPanelProperties, data.latitude));
+    const [solarEnergyRaportByPeak, setSolarEnergyRaportByPeak] = useState<energyRaport[]>(generateSolarEnergyRaport(data.weatherConditions, solarPanelProperties as solarPanelProperties, data.latitude, false));
+
+    const [windEnergyRaportByCurve, setWindEnergyRaportByCurve] = useState<energyRaport[]>(generateWindEnergyRaport(data.weatherConditions, windTurbineProperties as windTurbineProperties));
+    const [windEnergyRaportByArea, setWindEnergyRaportByArea] = useState<energyRaport[]>(generateWindEnergyRaport(data.weatherConditions, windTurbineProperties as windTurbineProperties, false));
 
     const handlePropertiesCallback = (properties: raportProperties): void => {
         setSolarPanelProperties(properties.solarPanel);
         setWindTurbineProperties(properties.windTurbine);
-        setSolarEnergyRaport(generateSolarEnergyRaport(data.weatherConditions, properties.solarPanel, data.latitude));
-        setWindEnergyRaport(generateWindEnergyRaport(data.weatherConditions, properties.windTurbine));
+        setSolarEnergyRaportByArea(generateSolarEnergyRaport(data.weatherConditions, properties.solarPanel, data.latitude));
+        setSolarEnergyRaportByPeak(generateSolarEnergyRaport(data.weatherConditions, properties.solarPanel, data.latitude, false));
+        setWindEnergyRaportByCurve(generateWindEnergyRaport(data.weatherConditions, properties.windTurbine));
+        setWindEnergyRaportByArea(generateWindEnergyRaport(data.weatherConditions, properties.windTurbine, false));
     };
 
     const sendData = async (weatherData: weatherData) => {
@@ -82,8 +89,10 @@ const Raport: React.FC<weatherDataProps> = ({data}) => {
                 />
 
                 <RaportCharts data={{
-                    solarEnergyRaport: solarEnergyRaport as energyRaport[],
-                    windEnergyRaport: windEnergyRaport as energyRaport[]
+                    solarEnergyRaportByArea: solarEnergyRaportByArea as energyRaport[],
+                    solarEnergyRaportByPeak: solarEnergyRaportByPeak as energyRaport[],
+                    windEnergyRaportByCurve: windEnergyRaportByCurve as energyRaport[],
+                    windEnergyRaportByArea: windEnergyRaportByArea as energyRaport[]
                 }} />
 
             </Grid2>
