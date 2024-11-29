@@ -1,8 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { copyFile, mkdir } from "fs/promises";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+import path, { join } from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,18 +13,14 @@ export default defineConfig({
       generateBundle: async () => {
         const assetsDir = "dist/assets";
         await mkdir(assetsDir, { recursive: true });
-        const files = [
-          "pyodide-lock.json",
-          "pyodide.asm.js",
-          "pyodide.asm.wasm",
-          "python_stdlib.zip",
-        ];
-        const modulePath = join(dirname(fileURLToPath(import.meta.url)), 'node_modules/pyodide');
+        const files = ["pyodide-lock.json", "pyodide.asm.js", "pyodide.asm.wasm", "python_stdlib.zip"];
+        const modulePath = path.resolve("node_modules/pyodide");
+        console.log("Resolved module path:", modulePath); // Debugowanie ścieżki
         for (const file of files) {
-          await copyFile(
-            join(dirname(modulePath), file),
-            join(assetsDir, file),
-          );
+          const src = join(modulePath, file);
+          const dest = join(assetsDir, file);
+          console.log(`Copying ${src} to ${dest}`);
+          await copyFile(src, dest);
         }
       },
     },
@@ -36,5 +31,5 @@ export default defineConfig({
         sourcemap: false,
       },
     },
-  },
-})
+  }
+});
