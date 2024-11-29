@@ -20,7 +20,7 @@ export default defineConfig({
           "pyodide.asm.wasm",
           "python_stdlib.zip",
         ];
-        const modulePath = fileURLToPath(import.meta.resolve("pyodide"));
+        const modulePath = join(dirname(fileURLToPath(import.meta.url)), 'node_modules/pyodide');
         for (const file of files) {
           await copyFile(
             join(dirname(modulePath), file),
