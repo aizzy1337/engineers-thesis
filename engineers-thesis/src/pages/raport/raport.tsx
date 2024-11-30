@@ -15,6 +15,7 @@ import RaportProperties from '../../features/raport/raport-properties/raport-pro
 import RaportCharts from '../../features/raport/raport-charts/raport-charts';
 import { raportHeader } from '../../types/raport-header-props';
 import { weatherData } from '../../types/weather-data';
+import FuzzyLogicPotential from '../../features/raport/fuzzy-logic-potential/fuzzy-logic';
 
 const Raport: React.FC<weatherDataProps> = ({data}) => {
     const [raportHeader, setRaportHeader] = useState<raportHeader>({
@@ -80,6 +81,8 @@ const Raport: React.FC<weatherDataProps> = ({data}) => {
                 <RaportHeader data={raportHeader}
                 callback={handleHeaderCallback}
                 />
+
+                <FuzzyLogicPotential data={data} />
 
                 <RaportProperties data={{
                     windTurbine: windTurbineProperties,
