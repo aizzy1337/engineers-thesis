@@ -1,9 +1,12 @@
+import ForbiddenException from "../../src/exceptions/forbidden-exception"
+import InternalServerError from "../../src/exceptions/internal-server-error"
+
 export async function onRequestPost(context) {
     const apiKey = context.request.headers.get('x-api-key');
     const validApiKey = context.env.VITE_API_KEY;
 
     if (!apiKey || apiKey !== validApiKey) {
-      return new Response('Forbidden', { status: 403 });
+      throw new ForbiddenException();
     }
 
     const code = context.params.put;
@@ -15,6 +18,6 @@ export async function onRequestPost(context) {
         status: 201,
       });
     } catch (e) {
-      return new Response(e.message, { status: 500 });
+        throw new InternalServerError();
     }
 }

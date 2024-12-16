@@ -7,14 +7,18 @@ function FrontPage() {
     return (
       <>
         <Header />
-        <main>
-          <Map />
-        </main>
-        <footer>
-          <p>@ Arkadiusz Zając</p>
-        </footer>
+        <Map />
+        <Footer />
       </>
     )
+}
+
+function Footer() {
+  return (
+    <footer>
+      <p>@ Arkadiusz Zając</p>
+    </footer>
+  )
 }
 
 export default FrontPage
