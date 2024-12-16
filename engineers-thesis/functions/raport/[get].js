@@ -11,8 +11,8 @@ export async function onRequestGet(context) {
   }
   
     const code = context.params.get;
-      try {
-        const value = await context.env.RAPORTS.get(code);
+    try {
+      const value = await context.env.RAPORTS.get(code);
   
         if (value === null) {
           throw new NotFoundException();
